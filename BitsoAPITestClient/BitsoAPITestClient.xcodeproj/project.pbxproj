@@ -13,18 +13,18 @@
 		6B05D43D25E4C0AC00E1E7DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B05D43B25E4C0AC00E1E7DA /* Main.storyboard */; };
 		6B05D43F25E4C0B000E1E7DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B05D43E25E4C0B000E1E7DA /* Assets.xcassets */; };
 		6B05D44225E4C0B000E1E7DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B05D44025E4C0B000E1E7DA /* LaunchScreen.storyboard */; };
-		6B20C91125E54F94008B0DF3 /* BitsoPublicAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B20C91025E54F94008B0DF3 /* BitsoPublicAPI.framework */; };
-		6B20C91225E54F94008B0DF3 /* BitsoPublicAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6B20C91025E54F94008B0DF3 /* BitsoPublicAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6B20C92225E606A9008B0DF3 /* BitsoPublicAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B20C92125E606A9008B0DF3 /* BitsoPublicAPI.framework */; };
+		6B20C92325E606A9008B0DF3 /* BitsoPublicAPI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6B20C92125E606A9008B0DF3 /* BitsoPublicAPI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		6B20C91325E54F94008B0DF3 /* Embed Frameworks */ = {
+		6B20C92425E606A9008B0DF3 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				6B20C91225E54F94008B0DF3 /* BitsoPublicAPI.framework in Embed Frameworks */,
+				6B20C92325E606A9008B0DF3 /* BitsoPublicAPI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -41,6 +41,7 @@
 		6B05D44125E4C0B000E1E7DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		6B05D44325E4C0B000E1E7DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6B20C91025E54F94008B0DF3 /* BitsoPublicAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BitsoPublicAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B20C92125E606A9008B0DF3 /* BitsoPublicAPI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BitsoPublicAPI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,7 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B20C91125E54F94008B0DF3 /* BitsoPublicAPI.framework in Frameworks */,
+				6B20C92225E606A9008B0DF3 /* BitsoPublicAPI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +90,7 @@
 		6B20C90F25E54F94008B0DF3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B20C92125E606A9008B0DF3 /* BitsoPublicAPI.framework */,
 				6B20C91025E54F94008B0DF3 /* BitsoPublicAPI.framework */,
 			);
 			name = Frameworks;
@@ -104,7 +106,7 @@
 				6B05D42E25E4C0AC00E1E7DA /* Sources */,
 				6B05D42F25E4C0AC00E1E7DA /* Frameworks */,
 				6B05D43025E4C0AC00E1E7DA /* Resources */,
-				6B20C91325E54F94008B0DF3 /* Embed Frameworks */,
+				6B20C92425E606A9008B0DF3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
