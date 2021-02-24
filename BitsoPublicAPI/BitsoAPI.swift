@@ -37,7 +37,27 @@ public struct BitsoAPI {
     
     public init() { }
     
-    func makeURL(for action: APIAction, queryItems: [URLQueryItem]? = nil) -> URL? {
+    public func getAvailableBooks(onResult: @escaping (Result<BookResult, Error>) -> Void) {
+
+        guard !isRateLimited else { return }
+        
+        performRequest(for: .availableBooks, onResponse: onResult)
+    }
+    
+    public func getTicker(book: String, onResult: @escaping (Result<TickerResult, Error>) -> Void) {
+
+        guard !isRateLimited else { return }
+
+        performRequest(for: .ticker,
+                       queryItems: [URLQueryItem(name: "book", value: book)],
+                       onResponse: onResult)
+    }
+}
+
+extension BitsoAPI {
+    
+    private func makeURL(for action: APIAction,
+                         queryItems: [URLQueryItem]? = nil) -> URL? {
         
         var urlComponents: URLComponents = .init()
         urlComponents.scheme = SCHEME
@@ -52,52 +72,23 @@ public struct BitsoAPI {
         
     }
     
-    public func getAvailableBooks( closure: @escaping (Result<BookResult, Error>) -> Void) {
-
-        guard !isRateLimited else { return }
-
-        guard let url = makeURL(for: .availableBooks) else {
+    private func performRequest<Type>(for action: APIAction,
+                                      queryItems: [URLQueryItem]? = nil,
+                                      onResponse: @escaping (Result<BitsoAPIResult<Type>, Error>) -> Void) {
+        
+        guard let url = makeURL(for: action,
+                                queryItems: queryItems) else {
             DefaultLogger.info("Could not create url from given components")
-            closure(.failure(BitsoAPIError.invalidURL))
+            onResponse(.failure(BitsoAPIError.invalidURL))
             return
         }
+    
+        performRequest(for: url, onResponse: onResponse)
         
-        let request: URLRequest = .init(url: url)
-        let session = URLSession.init(configuration: .default)
-
-        let task = session.dataTask(with: request) { data, response, error in
-            
-            if let response = response as? HTTPURLResponse,
-               response.statusCode == 200 {
-                
-                guard let data = data else { return }
-                
-                if let result: BookResult = resultFromData(data: data) {
-                    closure(.success(result))
-                } else {
-                    closure(.failure(BitsoAPIError.invalidData))
-                }
-                
-            } else if let error = error {
-                closure(.failure(error))
-            } else {
-                closure(.failure(BitsoAPIError.unkownError))
-            }
-        }
-        
-        task.resume()
     }
     
-    public func getTicker(book: String, closure: @escaping (Result<TickerResult, Error>) -> Void) {
-
-        guard !isRateLimited else { return }
-
-        guard let url = makeURL(for: .ticker,
-                                queryItems: [URLQueryItem(name: "book", value: book)]) else {
-            DefaultLogger.info("Could not create url from given components")
-            closure(.failure(BitsoAPIError.invalidURL))
-            return
-        }
+    private func performRequest<Type>(for url:URL,
+                                      onResponse: @escaping (Result<BitsoAPIResult<Type>, Error>) -> Void) {
         
         let request: URLRequest = .init(url: url)
         let session = URLSession.init(configuration: .default)
@@ -109,27 +100,24 @@ public struct BitsoAPI {
                 
                 guard let data = data else { return }
                 
-                if let result: TickerResult = resultFromData(data: data) {
-                    closure(.success(result))
+                if let result: BitsoAPIResult<Type> = resultFromData(data: data) {
+                    onResponse(.success(result))
                 } else {
-                    closure(.failure(BitsoAPIError.invalidData))
+                    onResponse(.failure(BitsoAPIError.invalidData))
                 }
 
             } else if let error = error {
-                closure(.failure(error))
+                onResponse(.failure(error))
             } else {
-                closure(.failure(BitsoAPIError.unkownError))
+                onResponse(.failure(BitsoAPIError.unkownError))
             }
         }
         
         task.resume()
         
     }
-}
 
-extension BitsoAPI {
-
-    func resultFromData<Type>(data: Data?) -> BitsoAPIResult<Type>? {
+    private func resultFromData<Type>(data: Data?) -> BitsoAPIResult<Type>? {
         guard let data = data else { return nil }
 
         let decoder: JSONDecoder = .init()
