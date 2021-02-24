@@ -1,5 +1,5 @@
 //
-//  BookResult.swift
+//  BitsoAPIResult.swift
 //  BitsoPublicAPI
 //
 //  Created by Angel Alberto Rueda Mejia on 2/23/21.
@@ -7,17 +7,17 @@
 
 import Foundation
 
-public struct BookResult {
+public struct BitsoAPIResult<Type: Decodable> {
     public let success: Bool
-    public let payload: [Book]
+    public let payload: [Type]
 }
 
-extension BookResult: Decodable {
+extension BitsoAPIResult: Decodable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.success = (try? container.decode(Bool.self, forKey: .success)) ?? false
-        self.payload = (try? container.decode([Book].self, forKey: .payload)) ?? []
+        self.payload = (try? container.decode([Type].self, forKey: .payload)) ?? []
     }
     
     enum CodingKeys: String, CodingKey {
