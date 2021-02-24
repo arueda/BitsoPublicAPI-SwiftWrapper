@@ -7,21 +7,21 @@
 
 import Foundation
 
-struct BookResult {
-    let success: Bool
-    let payload: [Book]
+public struct BookResult {
+    public let success: Bool
+    public let payload: [Book]
 }
 
 extension BookResult: Decodable {
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.success = (try? container.decode(Bool.self, forKey: .succes)) ?? false
+        self.success = (try? container.decode(Bool.self, forKey: .success)) ?? false
         self.payload = (try? container.decode([Book].self, forKey: .payload)) ?? []
     }
     
     enum CodingKeys: String, CodingKey {
-        case succes
+        case success
         case payload
     }
 }

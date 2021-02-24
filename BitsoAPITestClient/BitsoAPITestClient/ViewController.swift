@@ -15,7 +15,23 @@ class ViewController: UIViewController {
         
         let bitso: BitsoAPI = .init()
         
-        bitso.getAvailableBooks()
+        bitso.getAvailableBooks() { result in
+            
+            switch result {
+            case .success(let bookResult):
+                if bookResult.success {
+                    for book in bookResult.payload {
+                        print("==========")
+                        print(book)
+                        print("==========\n")
+                    }
+                    
+                }
+            case .failure(let error):
+                print("Error \(error)")
+            }
+            
+        }
         
         // Do any additional setup after loading the view.
     }

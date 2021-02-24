@@ -7,23 +7,23 @@
 
 import Foundation
 
-struct Book {
-    let book: String
-    let minimumPrice: String
-    let maximumPrice: String
-    let minimumAmount: String
-    let maximumAmount: String
-    let minimumValue: String
-    let maximumValue: String
-    let tickSize: String
-    let defaultChart: String
+public struct Book {
+    public let name: String
+    public let minimumPrice: String
+    public let maximumPrice: String
+    public let minimumAmount: String
+    public let maximumAmount: String
+    public let minimumValue: String
+    public let maximumValue: String
+    public let tickSize: String
+    public let defaultChart: String
 
 }
 
 extension Book: Decodable {
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.book = (try? container.decode(String.self, forKey: .book)) ?? ""
+        self.name = (try? container.decode(String.self, forKey: .name)) ?? ""
         self.minimumPrice = (try? container.decode(String.self, forKey: .minimumPrice)) ?? ""
         self.maximumPrice = (try? container.decode(String.self, forKey: .maximumPrice)) ?? ""
         self.minimumAmount = (try? container.decode(String.self, forKey: .minimumAmount)) ?? ""
@@ -35,7 +35,7 @@ extension Book: Decodable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case book
+        case name = "book"
         case minimumPrice = "minimum_price"
         case maximumPrice = "maximum_price"
         case minimumAmount = "minimum_amount"
@@ -43,6 +43,24 @@ extension Book: Decodable {
         case minimumValue = "minimum_value"
         case maximumValue = "maximum_value"
         case tickSize = "tick_size"
-        case defaultChart = "defaultChart"
+        case defaultChart = "default_chart"
     }
+}
+
+extension Book: CustomDebugStringConvertible {
+    public var debugDescription: String {
+        """
+        name: \(name)
+        minimumPrice: \(minimumPrice)
+        maximumPrice: \(maximumPrice)
+        minimumAmount: \(minimumAmount)
+        maximumAmount: \(maximumAmount)
+        minimumValue: \(minimumValue)
+        maximumValue: \(maximumValue)
+        tickSize: \(tickSize)
+        defaultChart: \(defaultChart)
+        """
+    }
+    
+    
 }
