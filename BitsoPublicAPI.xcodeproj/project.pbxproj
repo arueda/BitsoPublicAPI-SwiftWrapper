@@ -16,6 +16,7 @@
 		6B20C91625E55650008B0DF3 /* BitsoAPIResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C91525E55650008B0DF3 /* BitsoAPIResult.swift */; };
 		6B20C91C25E55664008B0DF3 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C91B25E55664008B0DF3 /* Book.swift */; };
 		6B20C92625E614CA008B0DF3 /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C92525E614CA008B0DF3 /* Ticker.swift */; };
+		6B20C92E25E76ADF008B0DF3 /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C92D25E76ADF008B0DF3 /* NetworkHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +42,7 @@
 		6B20C91525E55650008B0DF3 /* BitsoAPIResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BitsoAPIResult.swift; sourceTree = "<group>"; };
 		6B20C91B25E55664008B0DF3 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		6B20C92525E614CA008B0DF3 /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
+		6B20C92D25E76ADF008B0DF3 /* NetworkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +91,7 @@
 				6B05D44D25E4C0FF00E1E7DA /* BitsoAPI.swift */,
 				6B20C90725E4CAA6008B0DF3 /* SimpleLogger.swift */,
 				6B20C90B25E4CABD008B0DF3 /* DefaultLogger.swift */,
+				6B20C92D25E76ADF008B0DF3 /* NetworkHandler.swift */,
 			);
 			path = BitsoPublicAPI;
 			sourceTree = "<group>";
@@ -227,6 +230,7 @@
 				6B20C91C25E55664008B0DF3 /* Book.swift in Sources */,
 				6B20C92625E614CA008B0DF3 /* Ticker.swift in Sources */,
 				6B20C90C25E4CABD008B0DF3 /* DefaultLogger.swift in Sources */,
+				6B20C92E25E76ADF008B0DF3 /* NetworkHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
