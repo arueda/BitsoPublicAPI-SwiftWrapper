@@ -82,7 +82,7 @@ extension BitsoAPI {
 
         guard !isRateLimited else { return }
         
-        performRequest(for: .availableBooks,
+        performRequest(for: APIAction.availableBooks,
                        onResponse: onResult)
     }
     
@@ -90,8 +90,7 @@ extension BitsoAPI {
 
         guard !isRateLimited else { return }
 
-        let action: APIAction = .ticker(book)
-        performRequest(for: action,
+        performRequest(for: APIAction.ticker(book),
                        onResponse: onResult)
     }
     
@@ -99,8 +98,7 @@ extension BitsoAPI {
                              aggregate: Bool = false,
                              onResult: @escaping (Result<OrderBookResult, BitsoAPIError>) -> Void) {
 
-        let action: APIAction = .orderBook(book, aggregate)
-        performRequest(for: action,
+        performRequest(for: APIAction.orderBook(book, aggregate),
                        onResponse: onResult)
     }
     
