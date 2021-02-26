@@ -17,6 +17,7 @@
 		6B20C91C25E55664008B0DF3 /* Book.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C91B25E55664008B0DF3 /* Book.swift */; };
 		6B20C92625E614CA008B0DF3 /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C92525E614CA008B0DF3 /* Ticker.swift */; };
 		6B20C92E25E76ADF008B0DF3 /* NetworkHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C92D25E76ADF008B0DF3 /* NetworkHandler.swift */; };
+		6B20C93225E8BD5A008B0DF3 /* OrderBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B20C93125E8BD5A008B0DF3 /* OrderBook.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		6B20C91B25E55664008B0DF3 /* Book.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Book.swift; sourceTree = "<group>"; };
 		6B20C92525E614CA008B0DF3 /* Ticker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		6B20C92D25E76ADF008B0DF3 /* NetworkHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkHandler.swift; sourceTree = "<group>"; };
+		6B20C93125E8BD5A008B0DF3 /* OrderBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderBook.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				6B20C91525E55650008B0DF3 /* BitsoAPIResult.swift */,
 				6B20C91B25E55664008B0DF3 /* Book.swift */,
 				6B20C92525E614CA008B0DF3 /* Ticker.swift */,
+				6B20C93125E8BD5A008B0DF3 /* OrderBook.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6B05D44E25E4C0FF00E1E7DA /* BitsoAPI.swift in Sources */,
+				6B20C93225E8BD5A008B0DF3 /* OrderBook.swift in Sources */,
 				6B20C91625E55650008B0DF3 /* BitsoAPIResult.swift in Sources */,
 				6B20C90825E4CAA6008B0DF3 /* SimpleLogger.swift in Sources */,
 				6B20C91C25E55664008B0DF3 /* Book.swift in Sources */,

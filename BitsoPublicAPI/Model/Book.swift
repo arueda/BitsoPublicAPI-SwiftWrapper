@@ -17,7 +17,6 @@ public struct Book {
     public let maximumValue: String
     public let tickSize: String
     public let defaultChart: String
-
 }
 
 extension Book: Decodable {

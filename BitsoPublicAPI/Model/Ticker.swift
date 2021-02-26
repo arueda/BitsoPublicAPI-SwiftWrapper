@@ -7,5 +7,29 @@
 
 import Foundation
 
-public struct Ticker {}
-extension Ticker: Decodable {}
+public struct Ticker {
+    let book: String
+    let volume: String
+    let high: String
+    let last: String
+    let low: String
+    let vwap: String
+    let ask: String
+    let bid: String
+    let createdAt: Date
+}
+
+extension Ticker: Decodable {
+    enum CodingKeys: String, CodingKey {
+        case book
+        case volume
+        case high
+        case last
+        case low
+        case vwap
+        case ask
+        case bid
+        case createdAt = "created_at"
+        
+    }
+}
