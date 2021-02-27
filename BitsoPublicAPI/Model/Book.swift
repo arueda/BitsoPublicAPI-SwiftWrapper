@@ -60,6 +60,4 @@ extension Book: CustomDebugStringConvertible {
         defaultChart: \(defaultChart)
         """
     }
-    
-    
 }

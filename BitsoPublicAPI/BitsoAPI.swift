@@ -18,41 +18,41 @@ enum BitsoAPIError: Error {
 
 public
 struct BitsoAPI {
-    
-    public typealias BookResult = BitsoAPIResult<Book>
+
+    public typealias BookResult = BitsoAPIResult<[Book]>
     public typealias TickerResult = BitsoAPIResult<Ticker>
     public typealias OrderBookResult = BitsoAPIResult<OrderBook>
 
     let SCHEME: String = "https"
     let HOST: String = "api-dev.bitso.com"
     let API_VERSION: String = "/v3"
-    
+
     let networkHandler: NetworkHandler
-    
+
     var requestsPerformed: Int = 0
     var timeOfLastRequest: Date?
-    
+
     var isRateLimited: Bool {
         // TODO: Do not perform more than 60 requests per minute
         return false
     }
-    
+
     enum APIAction {
         case availableBooks
         case ticker(String)
         case orderBook(String, Bool)
-        
+
         var path: String {
             switch self {
             case .availableBooks:
                 return "/available_books"
             case .ticker:
-                return "ticker/"
+                return "/ticker"
             case .orderBook:
-                return "order_book/"
+                return "/order_book"
             }
         }
-        
+
         var queryItems: [URLQueryItem]? {
             switch self {
             case .availableBooks:
@@ -77,11 +77,11 @@ struct BitsoAPI {
 }
 
 extension BitsoAPI {
-    
+
     public func getAvailableBooks(onResult: @escaping (Result<BookResult, BitsoAPIError>) -> Void) {
 
         guard !isRateLimited else { return }
-        
+
         performRequest(for: APIAction.availableBooks,
                        onResponse: onResult)
     }
@@ -97,6 +97,8 @@ extension BitsoAPI {
     public func getOrderBook(book: String,
                              aggregate: Bool = false,
                              onResult: @escaping (Result<OrderBookResult, BitsoAPIError>) -> Void) {
+
+        guard !isRateLimited else { return }
 
         performRequest(for: APIAction.orderBook(book, aggregate),
                        onResponse: onResult)
@@ -122,7 +124,7 @@ extension BitsoAPI {
     
     private func performRequest<Type>(for action: APIAction,
                                       onResponse: @escaping (Result<BitsoAPIResult<Type>, BitsoAPIError>) -> Void) {
-        
+
         guard let url = buildURL(for: action,
                                  queryItems: action.queryItems) else {
             DefaultLogger.info("Could not create url from given components")
@@ -131,7 +133,7 @@ extension BitsoAPI {
         }
         
         networkHandler.performRequest(for: url) { data, response, error in
-            
+
             if let response = response as? HTTPURLResponse,
                response.statusCode == 200 {
 

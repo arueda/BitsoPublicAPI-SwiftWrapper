@@ -16,7 +16,7 @@ public struct Ticker {
     let vwap: String
     let ask: String
     let bid: String
-    let createdAt: Date
+    let createdAt: String
 }
 
 extension Ticker: Decodable {
