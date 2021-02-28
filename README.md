@@ -1,4 +1,4 @@
-# BitsoPublicAPI-SwiftWrapper
+# Bitso Public API SwiftWrapper
 A Swift Wrapper for [Bitso Public API](https://bitso.com/api_info)
 
 I am doing this as an exercise. To explore different ways to do thing.
