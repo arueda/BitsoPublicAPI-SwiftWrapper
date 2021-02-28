@@ -8,21 +8,30 @@
 import UIKit
 import BitsoPublicAPI
 
-protocol CellDataProvider {
-    var title: String { get }
-}
-
-class ADelegate: NSObject,UITableViewDelegate {
+class ADelegate: NSObject, UITableViewDelegate {
     
+    private var onDidSelect: ((IndexPath) -> Void)?
+    var data: [Book]?
+    
+    func onDidSelect(handler: @escaping ((IndexPath) -> Void)) {
+        self.onDidSelect = handler
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        onDidSelect?(indexPath)
+    }
 }
 
-class BooksData: NSObject,UITableViewDataSource {
-    typealias CELL_CONFIGURATOR = (UIListContentConfiguration, CellDataProvider) -> UIListContentConfiguration
+class BooksDataSource: NSObject, UITableViewDataSource {
+    
+    typealias CELL_CONFIGURATOR = (UIListContentConfiguration,
+                                   IndexPath,
+                                   [Book]) -> UIListContentConfiguration
     
     let cellIdentifier: String
+    
     private var cellConfigurator: CELL_CONFIGURATOR?
-    var cellDataProvider: CellDataProvider?
-    var data: [Book] = []
+    private var data: [Book] = []
     
     init(cellIdentifier: String = "aCell") {
         self.cellIdentifier = cellIdentifier
@@ -43,18 +52,21 @@ class BooksData: NSObject,UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         
-        if let cellConfigurator = self.cellConfigurator,
-           let cellDataProvider = self.cellDataProvider {
-            
+        if let cellConfigurator = self.cellConfigurator {
             cell.contentConfiguration = cellConfigurator(cell.defaultContentConfiguration(),
-                                                         cellDataProvider)
+                                                         indexPath,
+                                                         data)
         }
 
         return cell
     }
 
     func addBook(_ book: Book) {
-        data.append(book)
+        data.insert(book, at: 0)
+    }
+    
+    func book(for indexPath: IndexPath) -> Book {
+        data[indexPath.row]
     }
 }
 
@@ -62,44 +74,9 @@ class ViewController: UIViewController {
 
     let bitso: BitsoAPI = .init()
 
-    var firstBook: Book? {
-        didSet {
-            guard let firstBook = firstBook else { return }
-            print("\nFIRST BOOK\n")
-            print(firstBook)
-
-            print("\nCALLING GET TICKER...")
-            bitso.getTicker(book: firstBook.name) { result in
-
-                switch result {
-                case .success(let tickerResult):
-                    print("\nTICKER RESULT\n")
-                    if tickerResult.success {
-                        print(tickerResult.payload)
-                    }
-                case.failure(let error):
-                    print("Error \(error)")
-                }
-
-            }
-
-            print("\nCALLING GET ORDER BOOK..")
-            bitso.getOrderBook(book: firstBook.name) { result in
-                switch result {
-                case .success(let orderBookResult):
-                    print("\nORDER BOOK RESULT\n")
-                    if orderBookResult.success {
-                        print(orderBookResult.payload)
-                    }
-                case .failure(let error):
-                    print("Error \(error)")
-                }
-            }
-        }
-    }
-    
     let tableView: UITableView = .init(frame: .zero)
-    let aDataSource: BooksData = BooksData()
+    let booksData: BooksDataSource = BooksDataSource()
+    let delegate: ADelegate = .init()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,13 +96,13 @@ class ViewController: UIViewController {
                             self.tableView.beginUpdates()
                             let indexPath: IndexPath = .init(row: 0, section: 0)
                             self.tableView.insertRows(at: [indexPath], with: .fade)
-                            self.aDataSource.addBook(book)
+                            self.booksData.addBook(book)
                             self.tableView.endUpdates()
                         }
 
                     }
-
                 }
+                
             case .failure(let error):
                 print("Error \(error)")
             }
@@ -140,25 +117,41 @@ class ViewController: UIViewController {
 }
 
 extension ViewController {
+
     private func setupDataSource() {
-        aDataSource.onCellForRow { contentConfiguration, cellDataProvider in
+        booksData.onCellForRow { contentConfiguration, indexPath, data in
             var mutatedContentConfiguration = contentConfiguration
-            mutatedContentConfiguration.text = cellDataProvider.title
+            mutatedContentConfiguration.text = data[indexPath.row].name
             return mutatedContentConfiguration
         }
-        
-        aDataSource.cellDataProvider = {
-            struct _CellDataProvider: CellDataProvider {
-                var title: String { "HOLA MUNDO" }
-            }
-            
-            return _CellDataProvider()
-        }()
     }
     
     private func setupTableView() {
+        
+        delegate.onDidSelect { [weak self] indexPath in
+            guard let book = self?.booksData.book(for: indexPath) else { return }
+            
+            self?.bitso.getTicker(book: book.name) { result in
+
+                switch result {
+                case .success(let tickerResult):
+                    print("\nTICKER RESULT\n")
+                    if tickerResult.success {
+                        print(tickerResult.payload)
+                    }
+                case.failure(let error):
+                    print("Error \(error)")
+                }
+
+            }
+            
+        }
+        
+        tableView.delegate = delegate
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "aCell")
-        tableView.dataSource = aDataSource
+        tableView.dataSource = booksData
+        
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
@@ -196,7 +189,7 @@ extension ViewController {
                                                 constant: 0)
         
         NSLayoutConstraint.activate([left, right, top, bottom])
-        
+
     }
 }
 
