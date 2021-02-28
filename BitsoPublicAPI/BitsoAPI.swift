@@ -7,6 +7,17 @@
 
 import Foundation
 
+public struct Trade {
+    let book: String
+    let created_at: String
+    let amount: String
+    let maker_side: String
+    let price: String
+    let tid: String
+}
+
+extension Trade: Decodable {}
+
 public
 enum BitsoAPIError: Error {
     case invalidURL
@@ -22,6 +33,7 @@ struct BitsoAPI {
     public typealias BookResult = BitsoAPIResult<[Book]>
     public typealias TickerResult = BitsoAPIResult<Ticker>
     public typealias OrderBookResult = BitsoAPIResult<OrderBook>
+    public typealias TradesResult = BitsoAPIResult<[Trade]>
 
     let SCHEME: String = "https"
     let HOST: String = "api-dev.bitso.com"
@@ -41,6 +53,7 @@ struct BitsoAPI {
         case availableBooks
         case ticker(String)
         case orderBook(String, Bool)
+        case trades(String, String, String, Int)
 
         var path: String {
             switch self {
@@ -50,6 +63,8 @@ struct BitsoAPI {
                 return "/ticker"
             case .orderBook:
                 return "/order_book"
+            case .trades:
+                return "/trades"
             }
         }
 
@@ -62,6 +77,11 @@ struct BitsoAPI {
             case .orderBook(let book, let aggregate):
                 return [URLQueryItem(name: "book", value: book),
                         URLQueryItem(name: "aggregate", value: String(aggregate))]
+            case .trades(let book, let marker, let sort, let limit):
+                return [URLQueryItem(name: "book", value: book),
+                        URLQueryItem(name: "marker", value: marker),
+                        URLQueryItem(name: "sort", value: sort),
+                        URLQueryItem(name: "limit", value: String(limit))]
             }
         }
     }
@@ -102,6 +122,14 @@ extension BitsoAPI {
 
         performRequest(for: APIAction.orderBook(book, aggregate),
                        onResponse: onResult)
+    }
+    
+    // TODO: change sort to enum
+    public func getTrades(book: String, marker: String, sort: String, limit: Int,
+                          onResult: @escaping (Result<TickerResult, BitsoAPIError>) -> Void) {
+        guard !isRateLimited else { return }
+        
+        performRequest(for: APIAction.trades(book, marker, sort, limit), onResponse: onResult)
     }
     
 }
