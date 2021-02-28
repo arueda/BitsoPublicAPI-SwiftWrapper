@@ -17,6 +17,10 @@ public struct Book {
     public let maximumValue: String
     public let tickSize: String
     public let defaultChart: String
+    
+    var symbols: [String] {
+        name.components(separatedBy: "_")
+    }
 }
 
 extension Book: Decodable {
@@ -49,6 +53,7 @@ extension Book: Decodable {
 extension Book: CustomDebugStringConvertible {
     public var debugDescription: String {
         """
+        \n== BOOK ==
         name: \(name)
         minimumPrice: \(minimumPrice)
         maximumPrice: \(maximumPrice)
@@ -58,6 +63,7 @@ extension Book: CustomDebugStringConvertible {
         maximumValue: \(maximumValue)
         tickSize: \(tickSize)
         defaultChart: \(defaultChart)
+        == == ==\n
         """
     }
 }
